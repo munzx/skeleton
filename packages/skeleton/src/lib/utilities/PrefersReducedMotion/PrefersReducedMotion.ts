@@ -1,11 +1,12 @@
 import { readable } from 'svelte/store';
-import { BROWSER } from 'esm-env';
+import { browser } from '$app/environment';
+
 
 /** Prefers reduced motion  */
 const reducedMotionQuery = '(prefers-reduced-motion: reduce)';
 
 function prefersReducedMotion() {
-	if (!BROWSER) return false;
+	if (!browser) return false;
 	return window.matchMedia(reducedMotionQuery).matches;
 }
 
@@ -15,7 +16,7 @@ function prefersReducedMotion() {
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
  */
 export const prefersReducedMotionStore = readable(prefersReducedMotion(), (set) => {
-	if (BROWSER) {
+	if (browser) {
 		const setReducedMotion = (event: MediaQueryListEvent) => {
 			set(event.matches);
 		};

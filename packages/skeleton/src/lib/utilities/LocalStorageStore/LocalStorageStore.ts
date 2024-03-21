@@ -2,7 +2,7 @@
 // https://github.com/joshnuss/svelte-local-storage-store/blob/master/index.ts
 // Represents version v0.4.0 (2023-01-18)
 
-import { BROWSER } from 'esm-env';
+import { browser } from '$app/environment';
 import { writable as internal, get, type Writable } from 'svelte/store';
 
 declare type Updater<T> = (value: T) => T;
@@ -32,20 +32,20 @@ export function localStorageStore<T>(key: string, initialValue: T, options?: Opt
 	const storageType = options?.storage ?? 'local';
 
 	function updateStorage(key: string, value: T) {
-		if (!BROWSER) return;
+		if (!browser) return;
 
 		getStorage(storageType).setItem(key, serializer.stringify(value));
 	}
 
 	if (!stores[key]) {
 		const store = internal(initialValue, (set) => {
-			const json = BROWSER ? getStorage(storageType).getItem(key) : null;
+			const json = browser ? getStorage(storageType).getItem(key) : null;
 
 			if (json) {
 				set(<T>serializer.parse(json));
 			}
 
-			if (BROWSER) {
+			if (browser) {
 				const handleStorage = (event: StorageEvent) => {
 					if (event.key === key) set(event.newValue ? serializer.parse(event.newValue) : null);
 				};

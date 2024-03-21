@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { BROWSER } from 'esm-env';
+	import { browser } from '$app/environment';
 
 	// Event Dispatcher
 	type DrawerEvent = {
@@ -135,7 +135,7 @@
 	}
 
 	function applyAnimationSettings(): void {
-		if (!BROWSER) return;
+		if (!browser) return;
 		// prettier-ignore
 		switch (position) {
 			case 'top':    anim = { x: 0, y: -window.innerWidth }; break;
